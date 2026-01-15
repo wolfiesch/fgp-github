@@ -9,23 +9,23 @@
   },
   "methods": [
     {
-      "name": "repos",
+      "name": "github.repos",
       "description": "List your repositories"
     },
     {
-      "name": "issues",
+      "name": "github.issues",
       "description": "List issues for a repository"
     },
     {
-      "name": "notifications",
+      "name": "github.notifications",
       "description": "Get unread notifications"
     },
     {
-      "name": "pr_status",
+      "name": "github.pr_status",
       "description": "Check PR status for current branch"
     },
     {
-      "name": "user",
+      "name": "github.user",
       "description": "Get current authenticated user"
     }
   ],
