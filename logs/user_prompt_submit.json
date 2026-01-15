@@ -1,0 +1,50 @@
+[
+  {
+    "session_id": "57ed67ac-2bd7-4367-9402-225a5ad61c75",
+    "transcript_path": "/Users/wolfgangschoenberger/.claude/projects/-Users-wolfgangschoenberger-Projects-fgp/57ed67ac-2bd7-4367-9402-225a5ad61c75.jsonl",
+    "cwd": "/Users/wolfgangschoenberger/Projects/fgp/github",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "test the github daemon live"
+  },
+  {
+    "session_id": "57ed67ac-2bd7-4367-9402-225a5ad61c75",
+    "transcript_path": "/Users/wolfgangschoenberger/.claude/projects/-Users-wolfgangschoenberger-Projects-fgp/57ed67ac-2bd7-4367-9402-225a5ad61c75.jsonl",
+    "cwd": "/Users/wolfgangschoenberger/Projects/fgp/github",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "Okay, I should be logged into GitHub now. I just went through the authentication procedure via the CLI."
+  },
+  {
+    "session_id": "57ed67ac-2bd7-4367-9402-225a5ad61c75",
+    "transcript_path": "/Users/wolfgangschoenberger/.claude/projects/-Users-wolfgangschoenberger-Projects-fgp/57ed67ac-2bd7-4367-9402-225a5ad61c75.jsonl",
+    "cwd": "/Users/wolfgangschoenberger/Projects/fgp/github",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "commit the github daemon changes"
+  },
+  {
+    "session_id": "57ed67ac-2bd7-4367-9402-225a5ad61c75",
+    "transcript_path": "/Users/wolfgangschoenberger/.claude/projects/-Users-wolfgangschoenberger-Projects-fgp/57ed67ac-2bd7-4367-9402-225a5ad61c75.jsonl",
+    "cwd": "/Users/wolfgangschoenberger/Projects/fgp/github",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "push to github"
+  },
+  {
+    "session_id": "57ed67ac-2bd7-4367-9402-225a5ad61c75",
+    "transcript_path": "/Users/wolfgangschoenberger/.claude/projects/-Users-wolfgangschoenberger-Projects-fgp/57ed67ac-2bd7-4367-9402-225a5ad61c75.jsonl",
+    "cwd": "/Users/wolfgangschoenberger/Projects/fgp/github",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "what's next on the fgp plan"
+  },
+  {
+    "session_id": "57ed67ac-2bd7-4367-9402-225a5ad61c75",
+    "transcript_path": "/Users/wolfgangschoenberger/.claude/projects/-Users-wolfgangschoenberger-Projects-fgp/57ed67ac-2bd7-4367-9402-225a5ad61c75.jsonl",
+    "cwd": "/Users/wolfgangschoenberger/Projects/fgp/github",
+    "permission_mode": "bypassPermissions",
+    "hook_event_name": "UserPromptSubmit",
+    "prompt": "yes do the protocol compliance tests"
+  }
+]

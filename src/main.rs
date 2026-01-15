@@ -46,6 +46,7 @@ use anyhow::{Context, Result};
 use clap::{Parser, Subcommand};
 use fgp_daemon::{cleanup_socket, FgpServer};
 use std::path::Path;
+use std::process::Command;
 
 use crate::service::GitHubService;
 
@@ -133,7 +134,8 @@ fn cmd_start(socket: String, foreground: bool) -> Result<()> {
 
         // Token is resolved inside GitHubService::new
         let service = GitHubService::new(None).context("Failed to create GitHubService")?;
-        let server = FgpServer::new(service, &socket_path).context("Failed to create FGP server")?;
+        let server =
+            FgpServer::new(service, &socket_path).context("Failed to create FGP server")?;
         server.serve().context("Server error")?;
     } else {
         // Background mode - daemonize first, THEN create service
@@ -151,10 +153,9 @@ fn cmd_start(socket: String, foreground: bool) -> Result<()> {
                     .with_env_filter("fgp_github=debug,fgp_daemon=debug")
                     .init();
 
-                let service = GitHubService::new(None)
-                    .context("Failed to create GitHubService")?;
-                let server = FgpServer::new(service, &socket_path)
-                    .context("Failed to create FGP server")?;
+                let service = GitHubService::new(None).context("Failed to create GitHubService")?;
+                let server =
+                    FgpServer::new(service, &socket_path).context("Failed to create FGP server")?;
                 server.serve().context("Server error")?;
             }
             Err(e) => {
@@ -171,10 +172,25 @@ fn cmd_stop(socket: String) -> Result<()> {
     let socket_path = shellexpand::tilde(&socket).to_string();
     let pid_file = format!("{}.pid", socket_path);
 
+    if Path::new(&socket_path).exists() {
+        if let Ok(client) = fgp_daemon::FgpClient::new(&socket_path) {
+            if let Ok(response) = client.stop() {
+                if response.ok {
+                    println!("Daemon stopped.");
+                    return Ok(());
+                }
+            }
+        }
+    }
+
     // Read PID
     let pid_str = std::fs::read_to_string(&pid_file)
         .context("Failed to read PID file - daemon may not be running")?;
     let pid: i32 = pid_str.trim().parse().context("Invalid PID in file")?;
+
+    if !pid_matches_process(pid, "fgp-github") {
+        anyhow::bail!("Refusing to stop PID {}: unexpected process", pid);
+    }
 
     println!("Stopping fgp-github daemon (PID: {})...", pid);
 
@@ -193,6 +209,20 @@ fn cmd_stop(socket: String) -> Result<()> {
     println!("Daemon stopped.");
 
     Ok(())
+}
+
+fn pid_matches_process(pid: i32, expected_name: &str) -> bool {
+    let output = Command::new("ps")
+        .args(["-p", &pid.to_string(), "-o", "comm="])
+        .output();
+
+    match output {
+        Ok(output) if output.status.success() => {
+            let command = String::from_utf8_lossy(&output.stdout);
+            command.trim().contains(expected_name)
+        }
+        _ => false,
+    }
 }
 
 fn cmd_status(socket: String) -> Result<()> {

@@ -78,7 +78,9 @@ impl GitHubService {
 
     fn get_user(&self) -> Result<Value> {
         let client = self.client.clone();
-        let user = self.runtime.block_on(async move { client.get_user().await })?;
+        let user = self
+            .runtime
+            .block_on(async move { client.get_user().await })?;
 
         Ok(serde_json::json!(user))
     }
@@ -110,9 +112,9 @@ impl GitHubService {
         let state = state.to_string();
         let state_for_response = state.clone();
 
-        let issues = self.runtime.block_on(async move {
-            client.list_issues(&owner, &repo, &state, limit).await
-        })?;
+        let issues = self
+            .runtime
+            .block_on(async move { client.list_issues(&owner, &repo, &state, limit).await })?;
 
         Ok(serde_json::json!({
             "repo": repo_str,
@@ -135,9 +137,9 @@ impl GitHubService {
         let state = state.to_string();
         let state_for_response = state.clone();
 
-        let prs = self.runtime.block_on(async move {
-            client.list_prs(&owner, &repo, &state, limit).await
-        })?;
+        let prs = self
+            .runtime
+            .block_on(async move { client.list_prs(&owner, &repo, &state, limit).await })?;
 
         Ok(serde_json::json!({
             "repo": repo_str,
@@ -160,9 +162,9 @@ impl GitHubService {
         let owner = owner.to_string();
         let repo = repo.to_string();
 
-        let pr = self.runtime.block_on(async move {
-            client.get_pr(&owner, &repo, number).await
-        })?;
+        let pr = self
+            .runtime
+            .block_on(async move { client.get_pr(&owner, &repo, number).await })?;
 
         Ok(serde_json::json!(pr))
     }
@@ -377,10 +379,16 @@ impl FgpService for GitHubService {
 
         match result {
             Ok(true) => {
-                checks.insert("github_api".into(), HealthStatus::healthy_with_latency(latency));
+                checks.insert(
+                    "github_api".into(),
+                    HealthStatus::healthy_with_latency(latency),
+                );
             }
             Ok(false) => {
-                checks.insert("github_api".into(), HealthStatus::unhealthy("Empty viewer login"));
+                checks.insert(
+                    "github_api".into(),
+                    HealthStatus::unhealthy("Empty viewer login"),
+                );
             }
             Err(e) => {
                 checks.insert("github_api".into(), HealthStatus::unhealthy(e.to_string()));

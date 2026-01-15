@@ -9,9 +9,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::path::PathBuf;
 
-use crate::models::{
-    GraphQLResponse, Issue, Notification, PullRequest, Repository, User,
-};
+use crate::models::{GraphQLResponse, Issue, Notification, PullRequest, Repository, User};
 
 const GRAPHQL_ENDPOINT: &str = "https://api.github.com/graphql";
 const REST_ENDPOINT: &str = "https://api.github.com";
@@ -77,12 +75,11 @@ impl GitHubClient {
             );
         }
 
-        let content = std::fs::read_to_string(&config_path)
-            .context("Failed to read gh config file")?;
+        let content =
+            std::fs::read_to_string(&config_path).context("Failed to read gh config file")?;
 
         // Parse YAML config
-        let config: Value = serde_yaml::from_str(&content)
-            .context("Failed to parse gh config")?;
+        let config: Value = serde_yaml::from_str(&content).context("Failed to parse gh config")?;
 
         // Extract token for github.com
         let token = config
@@ -107,8 +104,7 @@ impl GitHubClient {
         }
 
         // Fall back to ~/.config/gh/hosts.yml
-        let home = dirs::home_dir()
-            .context("Could not determine home directory")?;
+        let home = dirs::home_dir().context("Could not determine home directory")?;
 
         Ok(home.join(".config").join("gh").join("hosts.yml"))
     }
@@ -141,14 +137,13 @@ impl GitHubClient {
 
         let text = response.text().await.context("Failed to read response")?;
 
-        let result: GraphQLResponse<T> = serde_json::from_str(&text)
-            .map_err(|e| {
-                anyhow::anyhow!(
-                    "JSON parse error: {} | Raw: {}",
-                    e,
-                    &text[..text.len().min(500)]
-                )
-            })?;
+        let result: GraphQLResponse<T> = serde_json::from_str(&text).map_err(|e| {
+            anyhow::anyhow!(
+                "JSON parse error: {} | Raw: {}",
+                e,
+                &text[..text.len().min(500)]
+            )
+        })?;
 
         // Check for GraphQL errors
         if result.data.is_none() {
@@ -160,9 +155,7 @@ impl GitHubClient {
             }
         }
 
-        result
-            .data
-            .context("GraphQL response missing data field")
+        result.data.context("GraphQL response missing data field")
     }
 
     /// Execute a REST API request (GET).
@@ -305,7 +298,9 @@ impl GitHubClient {
 
         let v = match result {
             Ok(r) => r.viewer,
-            Err(e) if e.to_string().contains("user:email") || e.to_string().contains("read:user") => {
+            Err(e)
+                if e.to_string().contains("user:email") || e.to_string().contains("read:user") =>
+            {
                 // Token lacks email scope, try without
                 let r: ViewerResponse = self.graphql(query_without_email, None).await?;
                 r.viewer
@@ -505,6 +500,7 @@ impl GitHubClient {
         }
 
         #[derive(Deserialize)]
+        #[allow(dead_code)]
         struct LabelNode {
             name: String,
             color: String,
@@ -568,12 +564,7 @@ impl GitHubClient {
     }
 
     /// Get pull request details with status checks and reviews.
-    pub async fn get_pr(
-        &self,
-        owner: &str,
-        repo: &str,
-        pr_number: i32,
-    ) -> Result<PullRequest> {
+    pub async fn get_pr(&self, owner: &str, repo: &str, pr_number: i32) -> Result<PullRequest> {
         let query = r#"
             query($owner: String!, $name: String!, $number: Int!) {
                 repository(owner: $owner, name: $name) {

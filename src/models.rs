@@ -109,6 +109,7 @@ pub struct GraphQLResponse<T> {
 pub struct GraphQLError {
     pub message: String,
     #[serde(default)]
+    #[allow(dead_code)]
     pub path: Option<Vec<serde_json::Value>>,
 }
 
