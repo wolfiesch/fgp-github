@@ -4,6 +4,7 @@ version = "0.2.0"
 edition = "2021"
 description = "FGP daemon for GitHub operations via GraphQL and REST API"
 license = "MIT"
+repository = "https://github.com/fast-gateway-protocol/github"
 authors = ["Wolfgang Schoenberger"]
 
 # CHANGELOG (recent first, max 5 entries)
